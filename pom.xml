@@ -45,5 +45,18 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>lenovo-release</id>
+            <name>lenovo release</name>
+            <url>http://nexus.xiqu.servicetest.lenovo/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>lenovo-snapshot</id>
+            <name>lenovo snapshot</name>
+            <url>http://nexus.xiqu.servicetest.lenovo/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
 </project>
