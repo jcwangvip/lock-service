@@ -12,7 +12,7 @@
     </parent>
     <groupId>org.jcm</groupId>
     <artifactId>lock-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>lock-parent</name>
     <description>锁相关的父项目</description>
 
@@ -20,7 +20,6 @@
 
     <modules>
         <module>lock</module>
-        <module>boot</module>
     </modules>
 
     <properties>
@@ -45,5 +44,17 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>lenovo-release</id>
+            <name>lenovo release</name>
+            <url>http://nexus.xiqu.servicetest.lenovo/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>lenovo-snapshot</id>
+            <name>lenovo snapshot</name>
+            <url>http://nexus.xiqu.servicetest.lenovo/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

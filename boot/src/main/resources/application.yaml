@@ -1,9 +1,0 @@
-#redis
-spring:
-  redis:
-    host: 192.168.99.100
-    port: 6379
-    timeout: 20000
-
-server:
-  port: 8080

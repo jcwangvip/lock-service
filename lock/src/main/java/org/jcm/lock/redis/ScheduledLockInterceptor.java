@@ -10,13 +10,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jcm.lock.LockException;
 import org.jcm.lock.ScheduledLocked;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * 定时任务锁拦截器
@@ -73,7 +70,6 @@ public class ScheduledLockInterceptor {
         }
         return scheduledLocked.name();
     }
-
 
 
 }
