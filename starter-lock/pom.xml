@@ -5,7 +5,7 @@
 
     <groupId>org.jcm</groupId>
     <artifactId>starter-lock</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.5</version>
     <name>starter-lock</name>
     <description>starter-lock</description>
     <properties>
