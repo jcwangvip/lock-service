@@ -30,7 +30,10 @@ public class RedisLockClientImpl implements LockClient {
     @Override
     public <R> R lock(Supplier<R> supplier, Collection<String> lockPaths, long waitTime, long leaseTime) throws InterruptedException {
         List<RLock> rLocks = lockPaths.stream().distinct().map(redissonClient::getLock).collect(Collectors.toList());
-        RLock[] locks = (RLock[]) rLocks.toArray();
+        RLock[] locks = new RLock[rLocks.size()];
+        for (int i = 0; i < rLocks.size(); i++) {
+            locks[i] = rLocks.get(i);
+        }
         List<String> lockPathList = rLocks.stream().map(RLock::getName).collect(Collectors.toList());
         log.info("current lock path {}", lockPathList);
         RLock multiLock = redissonClient.getMultiLock(locks);
