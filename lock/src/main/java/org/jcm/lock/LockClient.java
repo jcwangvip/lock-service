@@ -10,6 +10,17 @@ import java.util.function.Supplier;
  */
 public interface LockClient {
 
+    /**
+     * 锁
+     *
+     * @param runnable  runnable
+     * @param lockPaths 锁的路径
+     * @param waitTime  等待时间
+     * @param leaseTime 过期时间
+     * @return R
+     * @throws InterruptedException 释放锁失败异常
+     */
+    void lock(Runnable runnable, Collection<String> lockPaths, long waitTime, long leaseTime) throws InterruptedException;
 
     /**
      * 锁
