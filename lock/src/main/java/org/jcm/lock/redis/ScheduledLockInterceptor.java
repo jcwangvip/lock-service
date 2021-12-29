@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 定时任务锁拦截器
@@ -42,7 +43,7 @@ public class ScheduledLockInterceptor {
         Signature signature = pjp.getSignature();
         String key = getScheduledLockedName(signature);
         try {
-            Boolean isSuccess = redisService.scheduledLook(key, key);
+            Boolean isSuccess = redisService.scheduledLook(key, key, 3, TimeUnit.MINUTES);
             if (!isSuccess) {
                 if (debugEnabled) {
                     log.debug("{},{} 已被锁定,终止执行", key, key);
@@ -56,8 +57,6 @@ public class ScheduledLockInterceptor {
         } catch (Throwable throwable) {
             log.error("scheduledLocked加锁后,目标方法执行异常{0}", throwable);
             throw throwable;
-        } finally {
-            redisService.scheduledUnLook(key);
         }
     }
 

@@ -24,8 +24,8 @@ public class RedisService {
         return redisTemplate.opsForValue().setIfAbsent(k, v);
     }
 
-    public Boolean scheduledLook(String k, String v, long timeOut) {
-        return redisTemplate.opsForValue().setIfAbsent(k, v, timeOut, TimeUnit.SECONDS);
+    public Boolean scheduledLook(String k, String v, long timeOut, TimeUnit timeUnit) {
+        return redisTemplate.opsForValue().setIfAbsent(k, v, timeOut, timeUnit);
     }
 
     public Boolean scheduledUnLook(String k) {
