@@ -35,7 +35,7 @@ public class ScheduledLockInterceptor {
     }
 
     @Around("scheduledLockedPointcut()")
-    public Object scheduledLocked(ProceedingJoinPoint pjp) throws Throwable {
+    public void scheduledLocked(ProceedingJoinPoint pjp) throws Throwable {
         boolean debugEnabled = log.isDebugEnabled();
         if (debugEnabled) {
             log.debug("进入scheduledLocked流程...");
@@ -44,13 +44,16 @@ public class ScheduledLockInterceptor {
         String key = getScheduledLockedName(signature);
         try {
             Boolean isSuccess = redisService.scheduledLook(key, key, 3, TimeUnit.MINUTES);
+            if (null == isSuccess) {
+                log.info("{},{} 已存在,终止执行", key, key);
+                return;
+            }
             if (!isSuccess) {
                 if (debugEnabled) {
-                    log.debug("{},{} 已被锁定,终止执行", key, key);
+                    log.info("{},{} 已被锁定,终止执行", key, key);
                 }
-                return null;
             }
-            return pjp.proceed();
+            pjp.proceed();
         } catch (InterruptedException e) {
             log.error("scheduledLocked加锁过程异常{0}", e);
             throw new LockException("加锁过程异常:" + e.getMessage());
