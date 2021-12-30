@@ -5,10 +5,10 @@
     <parent>
         <groupId>org.jcm</groupId>
         <artifactId>lock-parent</artifactId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
     <artifactId>lock</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <name>lock</name>
     <description>Demo project for Spring Boot</description>
 
