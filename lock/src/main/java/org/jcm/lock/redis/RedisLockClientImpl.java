@@ -50,7 +50,17 @@ public class RedisLockClientImpl implements LockClient {
             log.error("current lock path exception,{}, {}", lockPaths, e);
             throw e;
         } finally {
-            unlock(multiLock);
+//            unlock(multiLock);
+            unlock(locks);
+        }
+    }
+
+    private void unlock(RLock[] locks) {
+        RLock lock = redissonClient.getMultiLock(locks);
+        if (lock != null) {
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
     }
 
@@ -91,7 +101,8 @@ public class RedisLockClientImpl implements LockClient {
             log.error("current lock path exception,{}, {}", lockPaths, e);
             throw e;
         } finally {
-            unlock(multiLock);
+//            unlock(multiLock);
+            unlock(locks);
         }
 
     }
