@@ -50,13 +50,22 @@ public class RedisLockClientImpl implements LockClient {
             log.error("current lock path exception,{}, {}", lockPaths, e);
             throw e;
         } finally {
-            try {
-                multiLock.unlock();
-            } catch (Exception e) {
-                log.error("current lock path unlock exception:", e);
-            }
+            unlock(multiLock);
         }
     }
+
+    private void unlock(RLock multiLock) {
+        try {
+            if (multiLock.isLocked()) {
+                if (multiLock.isHeldByCurrentThread()) {
+                    multiLock.unlock();
+                }
+            }
+        } catch (Exception e) {
+            log.error("current lock path unlock exception:", e);
+        }
+    }
+
 
     @Override
     public <R> R lock(Supplier<R> supplier, Collection<String> lockPaths, long waitTime, long leaseTime) throws InterruptedException {
@@ -82,13 +91,10 @@ public class RedisLockClientImpl implements LockClient {
             log.error("current lock path exception,{}, {}", lockPaths, e);
             throw e;
         } finally {
-            try {
-                multiLock.unlock();
-            } catch (Exception e) {
-                log.error("current lock path unlock exception:", e);
-            }
+            unlock(multiLock);
         }
 
     }
+
 
 }

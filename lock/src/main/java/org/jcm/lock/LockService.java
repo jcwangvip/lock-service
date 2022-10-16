@@ -32,7 +32,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             runnable.run();
         }
-        client.lock(runnable, lockPaths, 10, 600);
+        client.lock(runnable, lockPaths, 8, 300);
     }
 
 
@@ -67,7 +67,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             return supplier.get();
         }
-        return client.lock(supplier, lockPaths, 10, 600);
+        return client.lock(supplier, lockPaths, 8, 300);
     }
 
 
