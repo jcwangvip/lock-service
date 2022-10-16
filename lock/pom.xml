@@ -8,7 +8,7 @@
         <version>0.0.7</version>
     </parent>
     <artifactId>lock</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.9</version>
     <name>lock</name>
     <description>Demo project for Spring Boot</description>
 
