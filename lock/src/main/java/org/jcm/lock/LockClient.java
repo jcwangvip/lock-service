@@ -38,6 +38,17 @@ public interface LockClient {
     /**
      * 锁
      *
+     * @param runnable  runnable
+     * @param lockPaths 锁的路径
+     * @param waitTime  等待时间
+     * @param leaseTime 过期时间
+     * @return R
+     */
+    void locks(Runnable runnable, Collection<String> lockPaths, long waitTime, long leaseTime);
+
+    /**
+     * 锁
+     *
      * @param supplier  supplier
      * @param lockPaths 锁的路径
      * @param waitTime  等待时间

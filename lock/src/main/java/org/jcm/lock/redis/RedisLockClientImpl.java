@@ -90,6 +90,38 @@ public class RedisLockClientImpl implements LockClient {
         }
     }
 
+    @Override
+    public void locks(Runnable runnable, Collection<String> lockPaths, long waitTime, long leaseTime) {
+        RLock multiLock = getLock(lockPaths);
+        // 这里的InterruptedException是不是需要捕获后转换成别的异常
+        boolean lockSuccess;
+        try {
+            lockSuccess = multiLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            // 锁异常是声明好,还是运行时好
+            throw new LockException("current lock path InterruptedException {} ", lockPaths);
+        }
+        if (lockSuccess) {
+            try {
+                runnable.run();
+            } catch (Exception e) {
+                log.error("current lock execute business exception, {}, {}", lockPaths, e);
+                throw e;
+            } finally {
+                log.info("current lock path unlock, {}", lockPaths);
+                try {
+                    multiLock.unlock();
+                } catch (Exception e) {
+                    log.error("current lock path unlock exception: {} , {}", lockPaths, e);
+                }
+            }
+        } else {
+            log.info("current lock path tryLockFail : {}", lockPaths);
+            throw new LockException("current lock path tryLockFail");
+        }
+    }
+
 
     @Override
     public <R> R locks(Supplier<R> supplier, Collection<String> lockPaths, long waitTime, long leaseTime) {
@@ -118,8 +150,8 @@ public class RedisLockClientImpl implements LockClient {
                 }
             }
         } else {
-            log.error("current lock path time out : {}", lockPaths);
-            throw new LockException("current lock path time out");
+            log.info("current lock path tryLockFail : {}", lockPaths);
+            throw new LockException("current lock path tryLockFail");
         }
     }
 

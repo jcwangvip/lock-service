@@ -32,7 +32,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             runnable.run();
         }
-        client.lock(runnable, lockPaths, 8, 300);
+        client.locks(runnable, lockPaths, 8, 300);
     }
 
 
@@ -50,7 +50,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             runnable.run();
         }
-        client.lock(runnable, lockPaths, waitTime, leaseTime);
+        client.locks(runnable, lockPaths, waitTime, leaseTime);
     }
 
     /**
@@ -67,7 +67,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             return supplier.get();
         }
-        return client.lock(supplier, lockPaths, 8, 300);
+        return client.locks(supplier, lockPaths, 8, 300);
     }
 
 
@@ -88,7 +88,7 @@ public class LockService {
             log.debug("lockPaths is empty.");
             return supplier.get();
         }
-        return client.lock(supplier, lockPaths, waitTime, leaseTime);
+        return client.locks(supplier, lockPaths, waitTime, leaseTime);
     }
 
 
