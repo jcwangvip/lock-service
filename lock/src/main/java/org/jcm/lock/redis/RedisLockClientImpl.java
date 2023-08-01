@@ -167,4 +167,34 @@ public class RedisLockClientImpl implements LockClient {
     }
 
 
+    public <R> R locks1(Runnable runnable, Collection<String> lockPaths, long waitTime, long leaseTime) {
+        String[] paths = (String[]) lockPaths.toArray();
+        RLock[] locks = new RLock[paths.length];
+        for (int i = 0; i < paths.length; ++i) {
+            locks[i] = redissonClient.getLock(paths[i]);
+        }
+        try {
+            boolean locked = false;
+            while (!locked) {
+                try {
+                    locked =redissonClient.getMultiLock(locks).tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            boolean result =redissonClient.getMultiLock(locks).tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+            if (!result) {
+                throw new LockException("Failed to acquire distributed lock");
+            }
+            runnable.run();
+        } catch (Throwable throwable) {
+            throw new RuntimeException("Failed to process multi lock operation", throwable);
+        } finally {
+            redissonClient.getMultiLock(locks).unlock();
+        }
+        return null;
+    }
+
+
 }
